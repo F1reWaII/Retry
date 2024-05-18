@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
+    VideoPlayer videoPlayer;
 
     public float speed;
     public float jumpForce;
+
+    public int jumpAmount = 0;
 
     public static bool dubleJump = false;
 
     private bool isGrounded;
 
-    public int jumpAmount = 0;
 
     public Collider2D PointCheck;
 
@@ -20,12 +23,17 @@ public class PlayerController : MonoBehaviour
     
     public GameObject Monster;
 
-    public VideoPlayer videoPlayer;
+
+    private Animator _animator;
+
+    private bool _facingRight = true;
     
     // Start
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        videoPlayer= GetComponent<VideoPlayer>();
     }
 
     // Update
@@ -37,7 +45,6 @@ public class PlayerController : MonoBehaviour
     // OnCollisionEnter2D
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        IsGrounded(collision);
         if (collision.gameObject == Monster)
         {
             AfterDead();
@@ -51,20 +58,23 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
         DubleJump();
-    }
 
-    private void IsGrounded(Collision2D collision)
-    {
-        if (PointCheck.IsTouchingLayers(GroundLayer))
+        if(_facingRight == false && moveInput > 0)
         {
-            isGrounded = true;
+            Flip();
         }
-        if (PointCheck.IsTouchingLayers(GroundLayer))
+        else if (_facingRight == true && moveInput < 0)
         {
-            if (jumpAmount < 2 && dubleJump)
-            {
-                isGrounded = true;
-            }
+            Flip();
+        }
+
+        if(moveInput != 0)
+        {
+            _animator.SetBool("isWalking", true);
+        }
+        else if(moveInput == 0)
+        {
+            _animator.SetBool("isWalking", false);
         }
     }
 
@@ -98,6 +108,21 @@ public class PlayerController : MonoBehaviour
     private void AfterDead()
     {
         videoPlayer.Play();
+        
+        Invoke(nameof(ReloadScene), 3);
+    }
+
+    private void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void Flip()
+    {
+        _facingRight = !_facingRight;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
     }
 
 }

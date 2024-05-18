@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Monste
   - Monster
   layers:
   - Default
@@ -15,8 +14,8 @@ TagManager:
   - UI
   - 
   - 
-  - ground
-  - 
+  - Ground
+  - Player
   - 
   - 
   - 
