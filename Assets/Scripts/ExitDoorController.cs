@@ -8,7 +8,7 @@ public class ExitDoorController : MonoBehaviour
     public GameObject Cats; // Объект, связанный с текстом
     public GameObject exitCats; // Объект, контролируемый логикой ExitDoorController
     public TextMeshProUGUI displayText;
-    private string[] texts = { "Не открываеться...", "Чтож... я вроде видел несколько ключей в тех камерах, надо проверить, вдруг какойнибудь из них подойдёт." };
+    private string[] texts = { "Не открываеться...", "Чтож... надо проверить в тех камерах,, вдруг там окажиться ключ." };
     private int currentTextIndex = 0;
 
     private void Update()
