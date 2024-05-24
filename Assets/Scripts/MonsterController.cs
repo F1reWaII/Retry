@@ -7,6 +7,7 @@ public class MonsterController : MonoBehaviour
     public float speed = 5f; // Speed of the monster
     private bool isChasing = false;
     private Rigidbody2D rb;
+    public GameObject ggser;
 
     void Start()
     {
@@ -29,6 +30,7 @@ IEnumerator ChasePlayer()
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
         Vector2 targetPosition = new Vector2(transform.position.x, transform.position.y);
         rb.MovePosition(targetPosition + directionToPlayer * speed * Time.fixedDeltaTime);
+        Destroy(ggser);
 
         yield return null; // Wait for the next frame
     }

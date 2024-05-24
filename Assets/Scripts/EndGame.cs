@@ -1,23 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio; // Импорт пространства имен для работы с аудио
 
-public class LevelController : MonoBehaviour
+public class EndGame : MonoBehaviour
 {
-    private bool playerInside = false;
-    public int sceneIndex;
     public AudioClip soundToPlay; // Публичное поле для звукового файла
-
-    private AudioSource audioSource; // Компонент для воспроизведения звука
-
-    private void Start()
+    private AudioSource audioSource;
+    private bool playerInside = false;
+    // Start is called before the first frame update
+    void Start()
     {
-        audioSource = GetComponent<AudioSource>(); // Получаем компонент AudioSource
-        if (!audioSource) // Если компонента нет, создаем его
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+         if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            SceneManager.LoadScene(6);
+            PlaySound(); // Воспроизводим звук
         }
     }
 
@@ -34,16 +39,6 @@ public class LevelController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerInside = false;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerInside && Input.GetKeyDown(KeyCode.E))
-        {
-            SceneManager.LoadScene(sceneIndex);
-            PlaySound(); // Воспроизводим звук
         }
     }
 
